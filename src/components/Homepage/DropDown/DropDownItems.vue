@@ -8,16 +8,16 @@
     <div class="flex flex-col w-full">
       <!-- Filter items based on the search term -->
       <div
-        v-for="item in filteredItems"
-        :key="item"
+        v-for="(item, index) in filteredItems"
+        :key="index"
         class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-teal-100"
-        @click="selectItem(item)"
+        @click="[selectItem(item['username']), setUserId(item['id'])]"
       >
         <div
           class="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-teal-100"
         >
           <div class="w-full items-center flex">
-            <div class="mx-2">Jack John {{ item }}</div>
+            <div class="mx-2">{{ item["username"] }}</div>
           </div>
         </div>
       </div>
@@ -31,6 +31,10 @@ import { defineComponent, computed } from "vue";
 export default defineComponent({
   name: "DropDownItems",
   props: {
+    data: {
+      type: Object,
+      required: true,
+    },
     isOpenMenu: {
       type: Boolean,
       required: true,
@@ -43,13 +47,16 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    setUserId: {
+      type: Function,
+      required: true,
+    },
   },
   setup(props) {
-    const items = Array.from({ length: 10 }, (_, i) => i + 1);
-
+    const items = computed(() => props.data);
     const filteredItems = computed(() => {
-      return items.filter((item) =>
-        `Jack John ${item}` // update it
+      return items.value.data.slice(0, 100).filter((item) =>
+        item.username
           .toLowerCase()
           .includes(props.searchTerm.toLowerCase())
       );

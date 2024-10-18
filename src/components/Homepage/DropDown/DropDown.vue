@@ -4,13 +4,12 @@
       <label
         class="block text-sm font-medium leading-6 text-gray-900"
         :for="label"
-        >{{label}}</label
+        >{{ label }}</label
       >
     </div>
     <!-- Emit the search term -->
     <drop-down-input
       :label="label"
-      :name="name"
       :isOpenMenu="isOpenMenu"
       v-model="selectedValue"
       :setIsOpenMenu="setIsOpenMenu"
@@ -18,9 +17,11 @@
     />
     <!-- Pass search term -->
     <drop-down-items
+      :setUserId="setUserId"
       :isOpenMenu="isOpenMenu"
       :selectItem="selectItem"
       :searchTerm="searchTerm"
+      :data="data"
     />
   </div>
 </template>
@@ -33,12 +34,16 @@ import DropDownItems from "./DropDownItems.vue";
 export default defineComponent({
   name: "DropDown",
   props: {
+    data: {
+      type: Object,
+      required: true,
+    },
     label: {
       type: String,
       required: true,
     },
-    name: {
-      type: String,
+    setUserId: {
+      type: Function,
       required: true,
     },
   },
@@ -55,8 +60,8 @@ export default defineComponent({
       isOpenMenu.value = !isOpenMenu.value;
     };
 
-    const selectItem = (value: number) => {
-      selectedValue.value = `Item ${value}`;
+    const selectItem = (value: string) => {
+      selectedValue.value = value;
       isOpenMenu.value = false;
     };
 

@@ -4,7 +4,6 @@
     @click="setIsOpenMenu()"
   >
     <input
-      :name="name"
       :id="label"
       required
       class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
@@ -35,10 +34,6 @@ export default defineComponent({
   name: "DropDownInput",
   props: {
     label: {
-      type: String,
-      required: true,
-    },
-    name: {
       type: String,
       required: true,
     },
