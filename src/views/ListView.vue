@@ -1,5 +1,5 @@
 <template>
-  <div>hmoepage</div>
+  <div>list page</div>
 </template>
 
 <script lang="ts">
