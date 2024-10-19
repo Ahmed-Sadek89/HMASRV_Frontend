@@ -2,26 +2,31 @@
   <tbody>
     <tr
       class="bg-teal-700 border-b border-gray-700 hover:bg-gray-50 hover:text-black"
-      v-for="item in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-      :key="item"
+      v-for="(user, index) in topAssigned"
+      :key="index"
     >
-      <td class="px-6 py-4 text-center">Laptop</td>
+      <td class="px-6 py-4 text-center">{{ user["username"] }}</td>
       <th
         class="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap"
       >
-        Apple MacBook Pro 17" {{ item }}
+        {{ user["number_of_tasks"] }}
       </th>
-      
     </tr>
   </tbody>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   setup() {
-    return {};
+    const { state } = useStore();
+
+    const topAssigned = computed(() => {
+      return state.toAssignedUserState?.data;
+    });
+    return { topAssigned };
   },
 });
 </script>

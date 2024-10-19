@@ -6,7 +6,9 @@
     <span
       class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto"
       >Showing <span class="font-semibold text-gray-400">1-10</span> of
-      <span class="font-semibold text-gray-400">1000</span></span
+      <span class="font-semibold text-gray-400">{{
+        total || 0
+      }}</span></span
     >
     <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
       <li>
@@ -28,18 +30,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
+  props: {
+    total: {
+      type: Number,
+      required: true,
+    },
+  },
   setup() {
-    const route = useRoute();
 
+    const route = useRoute();
+    const { dispatch } = useStore();
     const currentPage = computed(() => {
       const page = Number(route.query.page);
       return isNaN(page) || page < 1 ? 1 : page;
     });
-
+    watch(
+      () => route.query.page,
+      (newPage) => {
+        const page = Number(newPage) || 1;
+        dispatch("getTasks", page);
+      }
+    );
     const previousPage = computed(() =>
       currentPage.value > 1 ? currentPage.value - 1 : 1
     );

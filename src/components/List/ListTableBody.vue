@@ -2,20 +2,20 @@
   <tbody>
     <tr
       class="bg-teal-700 border-b border-gray-700 hover:bg-gray-50 hover:text-black"
-      v-for="item in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-      :key="item"
+      v-for="(item, index) in data"
+      :key="index"
     >
-      <td class="px-6 py-4">Silver</td>
-      <td class="px-6 py-4">Laptop</td>
+      <td class="px-6 py-4">{{item["id"]}}</td>
+      <td class="px-6 py-4">{{item["title"]}}</td>
       <th
         scope="row"
         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
       >
-        Apple MacBook Pro 17" {{ item }}
+        {{item["description"]}}
       </th>
-      <td class="px-6 py-4">$2999</td>
-      <td class="px-6 py-4">Edit</td>
-      <td class="px-6 py-4">11/12/2024</td>
+      <td class="px-6 py-4"> {{item["admin_user"]}}</td>
+      <td class="px-6 py-4">{{item["assigned_user"]}}</td>
+      <td class="px-6 py-4">{{item["created_at"]}}</td>
     </tr>
   </tbody>
 </template>
@@ -24,6 +24,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+  },
   setup() {
     return {};
   },

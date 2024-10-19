@@ -18,6 +18,9 @@
           :setUserId="setAssignedId"
         />
         <submit-btn />
+        <div class="mt-5 text-center text-red-500 italic text-lg">
+          {{errorText}}
+        </div>
       </form>
     </div>
   </div>
@@ -44,8 +47,8 @@ export default defineComponent({
     SubmitBtn,
   },
   setup() {
-    const router = useRouter()
-    const { state,dispatch } = useStore();
+    const router = useRouter();
+    const { state, dispatch } = useStore();
 
     const adminUser = computed(() => {
       return state.adminUserState;
@@ -59,7 +62,7 @@ export default defineComponent({
 
     const setAdminId = (value: number) => (admin_id.value = value);
     const setAssignedId = (value: number) => (assigned_id.value = value);
-
+    const errorText = ref("");
     const handleSubmit = async (e: HTMLFormElement) => {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
@@ -67,17 +70,32 @@ export default defineComponent({
       formData.append("assigned_to", assigned_id.value);
 
       try {
-        await axios.post(`${BASE_URL}/task`, formData)
-        .then(res => {
-          if (res.status === 201) {
-            router.push('/list')
-          }
-        })
+        await axios
+          .post(`${BASE_URL}/task`, formData)
+          .then((res) => {
+            if (res.status === 201) {
+              dispatch("getTasks", 1);
+              dispatch("getTopAssignedUsers");
+              router.push("/list");
+            } else {
+              console.log({ res });
+            }
+          })
+          .catch((error) => {
+            errorText.value = error.response.data.message;
+          });
       } catch (error) {
         console.error("Failed to submit the form:", error);
       }
     };
-    return { setAdminId, setAssignedId, handleSubmit, adminUser, assignedUser };
+    return {
+      setAdminId,
+      setAssignedId,
+      handleSubmit,
+      adminUser,
+      assignedUser,
+      errorText,
+    };
   },
 });
 </script>

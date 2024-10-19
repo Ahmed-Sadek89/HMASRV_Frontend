@@ -9,7 +9,8 @@
 
 
 <script lang="ts" >
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import Header from "./components/Header/Header.vue";
 
@@ -19,12 +20,20 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-
+    const route = useRoute();
     // Fetch data when the component is mounted
     onMounted(() => {
       store.dispatch("getAdminUsers");
       store.dispatch("getAssignedUsers");
+      store.dispatch("getTopAssignedUsers");
     });
+    watch(
+      () => route.query.page,
+      (newPage) => {
+        const page = Number(newPage) || 1;
+        store.dispatch("getTasks", page);
+      }
+    );
   },
 });
 </script>

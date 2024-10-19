@@ -12,8 +12,6 @@ import StatisticsTable from "../components/Statistics/StatisticsTable.vue";
 
 export default defineComponent({
   components: { Links, StatisticsTable },
-  setup() {
-    return {};
-  },
+  setup() {},
 });
 </script>
