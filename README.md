@@ -23,3 +23,9 @@ yarn build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Time for developing
+date: 18/10/2024
+- Ui development and routing -> 5 hours
+- State management for link the backend server ->  3 hours
+
